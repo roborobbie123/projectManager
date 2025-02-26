@@ -24,8 +24,6 @@ export default function NewProject({ onClick, addProject, onSelect }) {
             dueDate: enteredDueDate
         }
         addProject(project);
-        
-
     }
 
     return (
