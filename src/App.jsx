@@ -12,12 +12,22 @@ function App() {
 
 
   function handleProjectMenu() {
-    setAddProjectMenu(prev => !prev);
+    if (projectsList.length < 1) {
+      setAddProjectMenu(true);
+    } else {
+      setAddProjectMenu(prev => !prev);
+    }
   }
 
   function handleSelectedProject(projectTitle) {
     setAddProjectMenu(false);
-    setSelectedProject(projectsList.find(p => p.title === projectTitle));
+    if (projectsList) {
+      setSelectedProject(projectsList.find(p => p.title === projectTitle));
+    }
+    else {
+      setSelectedProject('');
+    }
+
   }
 
   function handleAddProject(project) {
@@ -35,18 +45,39 @@ function App() {
         setSelectedProject(updatedList[0]);
       } else {
         setAddProjectMenu(true);
+        setSelectedProject('');
       }
       return updatedList;
     });
+  }
+
+  function handleAddTask(projectTitle, task) {
+    setProjectsList((prevData) => {
+      const updatedProjects = prevData.map((project) =>
+        project.title === projectTitle
+          ? { ...project, tasks: [...project.tasks, task] }
+          : project
+      );
+  
+      console.log("Updated projectsList:", updatedProjects);
+  
+      if (selectedProject.title === projectTitle) {
+        const updatedProject = updatedProjects.find((p) => p.title === projectTitle);
+        setSelectedProject(updatedProject);
+      }
+  
+      return updatedProjects;
+    });
+  }
+
+  function handleDeleteTask() {
 
   }
 
-
-
   return (
     <main className="h-screen my-8 flex gap-8">
-      <Sidebar onClick={handleProjectMenu} projects={projectsList} handleProject={handleSelectedProject} />
-      {addProjectMenu ? <NewProject onClick={handleProjectMenu} addProject={handleAddProject} /> : <Project project={selectedProject} onDelete={handleDelete} />}
+      <Sidebar onClick={handleProjectMenu} projects={projectsList} selectedProject={selectedProject} handleProject={handleSelectedProject} />
+      {addProjectMenu ? <NewProject onClick={handleProjectMenu} addProject={handleAddProject} /> : <Project onAddTask={handleAddTask} onDeleteTask={handleDeleteTask} project={selectedProject} onDelete={handleDelete} />}
 
 
     </main>

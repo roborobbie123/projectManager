@@ -13,7 +13,7 @@ export default function Modal({ children, ref }) {
     })
 
     return createPortal(
-        <dialog className="py-5 px-5 rounded-lg" ref={dialog}>
+        <dialog className="py-5 px-5 rounded-lg backdrop:bg-stone-900/90 shadow-md" ref={dialog}>
             {children}
             <form method="dialog">
                 <button className="my-3 rounded-sm bg-stone-700 text-white px-3 hover:bg-stone-200 hover:text-stone-950">Close</button>
