@@ -2,7 +2,7 @@ import Input from "./Input.jsx";
 import Modal from "./Modal.jsx";
 import { useRef } from 'react'
 
-export default function NewProject({ onClick, addProject }) {
+export default function NewProject({ onClick, addProject, onSelect }) {
     const modal = useRef();
     let title = useRef();
     let description = useRef();
@@ -23,7 +23,8 @@ export default function NewProject({ onClick, addProject }) {
             description: enteredDescription,
             dueDate: enteredDueDate
         }
-        addProject(project)
+        addProject(project);
+        
 
     }
 

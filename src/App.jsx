@@ -55,29 +55,43 @@ function App() {
     setProjectsList((prevData) => {
       const updatedProjects = prevData.map((project) =>
         project.title === projectTitle
-          ? { ...project, tasks: [...project.tasks, task] }
+          ? { ...project, tasks: project.tasks ? [...project.tasks, task] : [task] }
           : project
       );
-  
-      console.log("Updated projectsList:", updatedProjects);
-  
+
       if (selectedProject.title === projectTitle) {
         const updatedProject = updatedProjects.find((p) => p.title === projectTitle);
         setSelectedProject(updatedProject);
       }
-  
+
       return updatedProjects;
     });
   }
 
-  function handleDeleteTask() {
+  function handleDeleteTask(projectTitle, task) {
+    setProjectsList((prevData) => {
+      const updatedProjects = prevData.map((project) =>
+        project.title === projectTitle
+          ? { ...project, tasks: project.tasks && [...project.tasks.filter(item => item !== task)]}
+          : project
+      );
 
+      if (selectedProject.title === projectTitle) {
+        const updatedProject = updatedProjects.find((p) => p.title === projectTitle);
+        setSelectedProject(updatedProject);
+      }
+
+      return updatedProjects;
+    });
   }
+
+
+
 
   return (
     <main className="h-screen my-8 flex gap-8">
       <Sidebar onClick={handleProjectMenu} projects={projectsList} selectedProject={selectedProject} handleProject={handleSelectedProject} />
-      {addProjectMenu ? <NewProject onClick={handleProjectMenu} addProject={handleAddProject} /> : <Project onAddTask={handleAddTask} onDeleteTask={handleDeleteTask} project={selectedProject} onDelete={handleDelete} />}
+      {addProjectMenu ? <NewProject onSelect={handleSelectedProject} onClick={handleProjectMenu} addProject={handleAddProject} /> : <Project onAddTask={handleAddTask} onDeleteTask={handleDeleteTask} project={selectedProject} onDelete={handleDelete} />}
 
 
     </main>
