@@ -32,9 +32,11 @@ function App() {
 
   function handleAddProject(project) {
     setProjectsList(prevData => {
-      const updatedProjects = prevData ? [...prevData, project] : [project];
+      const updatedProjects = prevData ? [project, ...prevData] : [project];
       return updatedProjects;
     })
+    setSelectedProject(project);
+    setAddProjectMenu(false);
   }
 
   function handleDelete(projectTitle) {
